@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cw3.DAL;
 using Cw3.Models;
+using Cw3.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +20,15 @@ namespace Cw3.Controllers
 
         private const string ConString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog = db - mssql; Integrated Security = True;";
 
+        private IStudentsDal _dbService;
+
+        public StudentsController(IStudentsDal dbService)
+        {
+
+        }
         
         [HttpGet]
-        public IActionResult GetStudents()
+        public IActionResult GetStudents([FromServices]IStudentsDal dbService)
         {
             var list = new List<Student>();
             using (SqlConnection con = new SqlConnection(ConString))
@@ -77,7 +84,7 @@ namespace Cw3.Controllers
                 return NotFound();
         }
         //Procedury
-        [HttpGet]
+        [HttpGet("ex2")]
         public IActionResult GetStudents2()
         {
             using (SqlConnection con = new SqlConnection(ConString))
@@ -96,7 +103,7 @@ namespace Cw3.Controllers
             return NotFound();
         }
         //transakcje
-        [HttpGet]
+        [HttpGet("ex3")]
         public IActionResult GetStudents3()
         {
             using (SqlConnection con = new SqlConnection(ConString))

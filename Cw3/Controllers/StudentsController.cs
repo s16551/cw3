@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 using Cw3.DAL;
@@ -16,15 +18,38 @@ namespace Cw3.Controllers
     {
         private readonly IDbService _dbService;
 
+        private const string ConString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog = db - mssql; Integrated Security = True;";
+
         public StudentsController(IDbService dbService)
         {
             _dbService = dbService;
         }
         
         [HttpGet]
-        public IActionResult GetStudents(string orderBy)
+        public IActionResult GetStudents()
         {
-            return Ok(_dbService.GetStudents());
+            using (SqlConnection con = new SqlConnection(ConString))
+
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.Connection = con;
+                com.CommandText = "select * from dbo.students";
+
+                con.Open();
+                SqlDataReader dr = com.ExecuteReader();
+
+                while (dr.Read())
+                {
+
+                }
+            }
+
+                
+
+
+           
+
+            return Ok();
         }
 
         [HttpPost]
@@ -44,6 +69,7 @@ namespace Cw3.Controllers
         [HttpDelete("{id}")] 
         IActionResult DeleteStudent(Student student)
         {
+            //executenon query
             return Ok("Usuwanie ukonczone");
         }
     }
